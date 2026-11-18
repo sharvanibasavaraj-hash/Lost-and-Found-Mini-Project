@@ -52,3 +52,15 @@ node server.js
 ```
 
 7. Open `http://localhost:3000` in your browser.
+
+Learning Outcomes
+
+Frontend and backend integration.
+
+Building server-side applications with Node.js and Express.js.
+
+Connecting applications to MySQL.
+
+Performing database operations.
+
+Implementing database triggers and activity logging.
