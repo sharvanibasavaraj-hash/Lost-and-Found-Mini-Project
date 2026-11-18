@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Items</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            text-align: center;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container{
+            background: white;
+            width: 95%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        th, td{
+            border: 1px solid #ddd;
+            padding: 10px;
+            white-space: nowrap;
+        }
+
+        th{
+            background: #f5f5f5;
+        }
+
+        .btn-box{
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn{
+            background: white;
+            color: black;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .btn:hover{
+            background: #f9f9f9;
+        }
+
+        .delete-btn{
+            color: blue;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>ALL LOST & FOUND ITEMS</h2>
+
+    <table>
+
+        <tr>
+            <th>Name</th>
+            <th>USN</th>
+            <th>Dept</th>
+            <th>Year</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Type</th>
+            <th>Lost Date</th>
+            <th>Found Date</th>
+            <th>Location</th>
+            <th>Action</th>
+        </tr>
+
+        <tbody id="tableBody"></tbody>
+
+    </table>
+
+    <div class="btn-box">
+
+        <div class="btn" onclick="location.href='/index.html'">
+            ADD ITEM
+        </div>
+
+        <div class="btn" onclick="location.href='/home.html'">
+            GO HOME
+        </div>
+
+        <div class="btn" onclick="location.href='/trigger.html'">
+            TRIGGER LOGS
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+fetch("/items")
+
+.then(res => res.json())
+
+.then(data => {
+
+    let output = "";
+
+    data.forEach(item => {
+
+        output += `
+        <tr>
+
+            <td>${item.student_name}</td>
+
+            <td>${item.usn}</td>
+
+            <td>${item.department}</td>
+
+            <td>${item.student_year}</td>
+
+            <td>${item.item_name}</td>
+
+            <td>${item.description}</td>
+
+            <td>${item.phone}</td>
+
+            <td>${item.email}</td>
+
+            <td>${item.type}</td>
+
+            <td>
+                ${item.lost_date
+                    ? new Date(item.lost_date).toLocaleDateString()
+                    : ""}
+            </td>
+
+            <td>
+                ${item.found_date
+                    ? new Date(item.found_date).toLocaleDateString()
+                    : ""}
+            </td>
+
+            <td>${item.location}</td>
+
+            <td>
+                <button class="delete-btn" onclick="del(${item.id})">
+                    DELETE
+                </button>
+            </td>
+
+        </tr>
+        `;
+    });
+
+    document.getElementById("tableBody").innerHTML = output;
+
+});
+
+function del(id){
+
+    fetch("/delete/" + id, {
+        method: "DELETE"
+    })
+
+    .then(() => location.reload());
+
+}
+
+</script>
+
+</body>
+</html>
